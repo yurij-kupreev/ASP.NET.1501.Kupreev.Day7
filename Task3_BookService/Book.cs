@@ -41,7 +41,7 @@ namespace Task3_BookService
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return Author.GetHashCode() + Title.GetHashCode() + Year + PublishedBy.GetHashCode();
         }
 
         public override string ToString()
