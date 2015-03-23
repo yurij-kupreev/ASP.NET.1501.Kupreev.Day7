@@ -16,7 +16,7 @@ namespace Task1UI
             do { Console.Write("Set the timeout in seconds: "); }
             while (!int.TryParse(Console.ReadLine(), out countdown));
 
-            var timer = new TimerImitation();
+            //var timer = new TimerImitation();
             var manager = new TimerManager();
             SignedTypesBase[] array = new SignedTypesBase[3];
             array[0] = new SignedClassNumber1();
@@ -27,7 +27,7 @@ namespace Task1UI
             array[0].Register(manager);
             array[1].Register(manager);
             array[2].Register(manager);
-            timer.Imitation(manager, countdown);
+            manager.SimulateCountDown(countdown);
             Console.WriteLine();
             foreach (SignedTypesBase element in array)
             {
@@ -36,7 +36,7 @@ namespace Task1UI
             }
 
             array[0].Unregister(manager);
-            timer.Imitation(manager, countdown); 
+            manager.SimulateCountDown(countdown);
             Console.WriteLine();
             foreach (SignedTypesBase element in array)
             {
@@ -45,7 +45,7 @@ namespace Task1UI
             }
 
             array[1].Unregister(manager);
-            timer.Imitation(manager, countdown);
+            manager.SimulateCountDown(countdown);
             Console.WriteLine();
             foreach (SignedTypesBase element in array)
             {

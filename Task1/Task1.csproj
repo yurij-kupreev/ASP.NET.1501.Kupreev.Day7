@@ -44,7 +44,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignedTypes.cs" />
     <Compile Include="SignedTypesBase.cs" />
-    <Compile Include="TimerImitation.cs" />
     <Compile Include="TimerManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

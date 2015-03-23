@@ -15,6 +15,7 @@ namespace Task3_BookService
             FileName = fileName;
         }
 
+
         public void SaveBooks(IEnumerable<Book> bookList)
         {
             if (bookList == null) throw new ArgumentNullException();
@@ -35,8 +36,8 @@ namespace Task3_BookService
             catch { throw; }
             finally
             {
-                if (fs != null) { fs.Dispose(); fs.Close(); }
-                if (bw != null) { bw.Dispose(); bw.Close(); }
+                if (fs != null) { fs.Close(); }
+                if (bw != null) { bw.Close(); }
             }
         }
 
@@ -57,8 +58,8 @@ namespace Task3_BookService
             catch { throw; }
             finally
             {
-                if (fs != null) { fs.Dispose(); fs.Close(); }
-                if (br != null) { br.Dispose(); br.Close(); }
+                if (fs != null) { fs.Close(); }
+                if (br != null) { br.Close(); }
             }
             return listBooks;
         }

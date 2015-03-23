@@ -3,13 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace Task3_BookService
 {
-    public static class BookListService
+    public class BookListService
     {
-        public static void AddBook(this List<Book> bookList, Book book)
+        private IBookRepository bookRepository;
+        private Logger logger;
+        public BookListService(IBookRepository bookRepository)
         {
+            this.bookRepository = bookRepository;
+            logger = LogManager.GetCurrentClassLogger();
+        }
+        public void AddBook(Book book)
+        {
+            List<Book> bookList = null;
+            try
+            {
+                bookList = (List<Book>)bookRepository.LoadBooks();
+            }
+            catch (Exception e)
+            {
+                logger.Error("Reading file error.");
+                logger.Error(e.StackTrace);
+            }
+
             if (bookList == null || book == null) throw new ArgumentNullException("null-parameters in AddBook");
 
             foreach (Book element in bookList)
@@ -18,17 +37,56 @@ namespace Task3_BookService
             }
 
             bookList.Add(book);
+
+            try
+            {
+                bookRepository.SaveBooks(bookList);
+            }
+            catch (Exception e)
+            {
+                logger.Error("Writing file error.");
+                logger.Error(e.StackTrace);
+            }
         }
 
-        public static void SortBooks(List<Book> bookList, IComparer<Book> compareLogic)
+        public void SortBooks(IComparer<Book> compareLogic)
         {
+            List<Book> bookList = null;
+            try
+            {
+                bookList = (List<Book>)bookRepository.LoadBooks();
+            }
+            catch (Exception e)
+            {
+                logger.Error("Reading file error.");
+                logger.Error(e.StackTrace);
+            }
             if (bookList == null || compareLogic == null) throw new ArgumentNullException("null-parameters in SortBooks");
             bookList.Sort(compareLogic);
+            try
+            {
+                bookRepository.SaveBooks(bookList);
+            }
+            catch (Exception e)
+            {
+                logger.Error("Writing file error.");
+                logger.Error(e.StackTrace);
+            }
         }
 
-        public static List<Book> GiveBooksToParameter(List<Book> bookList, String author = null, String title = null, int year = 0, String publishedBy = null)
+        public List<Book> GiveBooksToParameter(String author = null, String title = null, int year = 0, String publishedBy = null)
         {
-            if (bookList == null || (author == null && title == null && year == 0 && publishedBy == null))
+            List<Book> bookList = null;
+            try
+            {
+                bookList = (List<Book>)bookRepository.LoadBooks();
+            }
+            catch (Exception e)
+            {
+                logger.Error("Reading file error.");
+                logger.Error(e.StackTrace);
+            }
+            if (author == null && title == null && year == 0 && publishedBy == null)
                 throw new ArgumentNullException("null-parameters in GiveBooksToParameter");
             List<Book> newBookList = new List<Book>();
             foreach (Book element in bookList)
@@ -44,9 +102,23 @@ namespace Task3_BookService
                     if (element.PublishedBy != publishedBy) { parameterEquals = false; continue; }
                 if (parameterEquals) newBookList.Add(element);
             }
-            if (newBookList.Count == 0) throw new ArgumentException("There are no books with such specification if the store.");
+            if (newBookList.Count == 0) throw new ArgumentException("There are no books with such specification in the store.");
             else return newBookList;
         }
 
+        public List<Book> GetBookList()
+        {
+            List<Book> bookList = null;
+            try
+            {
+                bookList = (List<Book>)bookRepository.LoadBooks();
+            }
+            catch (Exception e)
+            {
+                logger.Error("Reading file error.");
+                logger.Error(e.StackTrace);
+            }
+            return bookList;
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace Task2
         public static void SortMatrixMode(this int[][] matrix, IArrayComparer sortmodes)
         {
             if (matrix == null) throw new ArgumentException();
-            BubbleSort.Sort(matrix, sortmodes);
+            BubbleSort.Sort(matrix, sortmodes.Compare);
         }
         public static void SortMatrixMode(this int[][] matrix, ArrayCompareDelegate compareMethod)
         {

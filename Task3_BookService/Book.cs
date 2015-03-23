@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task3_BookService
 {
-    public class Book : IEquatable<Book>
+    public class Book : IEquatable<Book>, IComparable<Book>
     {
         public string Author { get; private set; }
         public string Title { get; private set; }
@@ -27,6 +27,16 @@ namespace Task3_BookService
             return (Author == book.Author) && (Title == book.Title) && (Year == book.Year) && (PublishedBy == book.PublishedBy);
         }
 
+        public int CompareTo(Book arg)
+        {
+            if (this.Equals(arg)) return 0;
+            else return this.Author.CompareTo(arg.Author);
+        }
+        //int IComparable.CompareTo(object arg)
+        //{
+        //    if (!(arg is Book)) throw new ArgumentException("Invalide type"); 
+        //    return this.CompareTo((Book)arg);
+        //}
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
